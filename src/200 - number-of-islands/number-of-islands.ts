@@ -35,59 +35,54 @@ const checkValidPoint = (
   );
 };
 
-function depthFirstSearch(
-  grid: string[][],
-  position: number,
-  maxX: number,
-  visited: Set<number>
-) {
+function depthFirstSearch(grid: string[][], position: number, maxX: number) {
   const stack: number[] = [];
   stack.push(position);
-  visited.add(position);
 
   while (stack.length > 0) {
     const position = stack.pop()!;
     const { x, y } = getPosition({ position, maxX });
 
+    grid[y][x] = "0";
+
     let aux = setPosition({ y: y + 1, x, maxX });
-    if (!visited.has(aux) && checkValidPoint(grid, { position: aux, maxX })) {
+    if (y < grid.length && checkValidPoint(grid, { position: aux, maxX })) {
       stack.push(aux);
-      visited.add(aux);
     }
 
     aux = setPosition({ y: y - 1, x, maxX });
-    if (!visited.has(aux) && checkValidPoint(grid, { position: aux, maxX })) {
+    if (y > 0 && checkValidPoint(grid, { position: aux, maxX })) {
       stack.push(aux);
-      visited.add(aux);
     }
 
     aux = setPosition({ x: x + 1, y, maxX });
-    if (!visited.has(aux) && checkValidPoint(grid, { position: aux, maxX })) {
+    if (
+      x + 1 < grid[0].length &&
+      checkValidPoint(grid, { position: aux, maxX })
+    ) {
       stack.push(aux);
-      visited.add(aux);
     }
 
     aux = setPosition({ x: x - 1, y, maxX });
-    if (!visited.has(aux) && checkValidPoint(grid, { position: aux, maxX })) {
+    if (x > 0 && checkValidPoint(grid, { position: aux, maxX })) {
       stack.push(aux);
-      visited.add(aux);
     }
   }
 }
 
 function numIslands(grid: string[][]): number {
   let counted: number = 0;
-  const visited: Set<number> = new Set();
   const maxX: number = (grid && grid[0].length) || 0;
 
   for (let y = 0; y < grid.length; y++) {
-    for (let x = 0; x < grid[0].length; x++) {
-      const position = setPosition({ y, x, maxX });
-      if (visited.has(position) || grid[y][x] === "0") {
+    for (let x = 0; x < grid[y].length; x++) {
+      if (grid[y][x] === "0") {
         continue;
       }
 
-      depthFirstSearch(grid, position, maxX, visited);
+      const position = setPosition({ y, x, maxX });
+      depthFirstSearch(grid, position, maxX);
+
       counted += 1;
     }
   }
