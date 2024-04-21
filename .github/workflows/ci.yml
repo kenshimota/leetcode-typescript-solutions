@@ -1,0 +1,25 @@
+name: Leetcode Typescript Solutions
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+jobs:
+  container-job:
+    runs-on: ubuntu-latest
+    container: node:20.12.2-alpine
+    environment: ci-test
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: install dependencies
+        run: |
+          npm install
+      - name: test units
+        run: |
+          npm test
