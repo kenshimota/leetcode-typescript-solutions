@@ -1,4 +1,4 @@
-import numIslands from "./number-of-islands";
+import numIslands from "./index";
 
 describe("count numbers of island", () => {
   test("one small island", () => {
