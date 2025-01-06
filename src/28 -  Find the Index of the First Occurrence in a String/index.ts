@@ -16,8 +16,7 @@ function strStr(haystack: string, needle: string): number {
         i = i - counted ;
         counted = 0;
     }
-
-
+    
     return -1;
 };
 
